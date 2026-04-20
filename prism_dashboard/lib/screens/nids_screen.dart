@@ -17,7 +17,9 @@ class NidsScreen extends StatelessWidget {
       metrics: NidsMetrics(provider: provider),
       graph: TrafficGraph(provider: provider, title: 'Network Traffic (PPS)'),
       alerts: AlertFeed(
-        alerts: provider.alerts.where((a) => a.source.toLowerCase() == 'nids').toList(),
+        alerts: provider.alerts
+            .where((a) => a.source.toLowerCase() == 'nids')
+            .toList(),
         title: 'Network Alerts',
       ),
     );
@@ -37,9 +39,16 @@ class NidsMetrics extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Network Metrics', style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              'Network Metrics',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const Divider(height: 32),
-            MetricRow(label: 'Throughput', value: (net?.pps ?? 0).toString(), unit: 'PPS'),
+            MetricRow(
+              label: 'Throughput',
+              value: (net?.pps ?? 0).toString(),
+              unit: 'PPS',
+            ),
             MetricRow(
               label: 'Bandwidth',
               value: ((net?.bps ?? 0) / 1024).toStringAsFixed(1),
@@ -47,10 +56,15 @@ class NidsMetrics extends StatelessWidget {
             ),
             const Spacer(),
             if (net != null) ...[
-              const Text('Protocols (1s Window)', style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.bold)),
+              Text(
+                'Protocols (1s Window)',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 16),
               ...net.protocols.entries.map((e) {
-                final double percentage = net.pps > 0 ? (e.value / net.pps) * 100 : 0;
+                final double percentage = net.pps > 0
+                    ? (e.value / net.pps) * 100
+                    : 0;
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: Column(
@@ -59,10 +73,16 @@ class NidsMetrics extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(e.key, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+                          Text(
+                            e.key,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                           Text(
                             '${percentage.toStringAsFixed(1)}% (${e.value})',
-                            style: const TextStyle(color: Colors.grey, fontSize: 11),
+                            style: const TextStyle(fontSize: 11),
                           ),
                         ],
                       ),
@@ -90,11 +110,16 @@ class NidsMetrics extends StatelessWidget {
   Color _getProtocolColor(BuildContext context, String proto) {
     final colors = Theme.of(context).colorScheme;
     switch (proto.toUpperCase()) {
-      case 'TCP': return colors.primary;
-      case 'UDP': return colors.secondary;
-      case 'ICMP': return colors.tertiary;
-      case 'OTHER IP': return colors.outline;
-      default: return colors.surfaceContainerHighest;
+      case 'TCP':
+        return colors.primary;
+      case 'UDP':
+        return colors.secondary;
+      case 'ICMP':
+        return colors.tertiary;
+      case 'OTHER IP':
+        return colors.outline;
+      default:
+        return colors.surfaceContainerHighest;
     }
   }
 }
