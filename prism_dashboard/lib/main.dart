@@ -20,7 +20,7 @@ class PrismApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeMode = context.watch<PrismProvider>().themeMode;
-    
+
     final darkTheme = ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,

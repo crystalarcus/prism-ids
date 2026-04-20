@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:provider/provider.dart';
 import '../providers/prism_provider.dart';
 
 class TrafficGraph extends StatelessWidget {
@@ -95,6 +96,7 @@ class HostGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showGrid = Provider.of<PrismProvider>(context).showGrid;
     return Card(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 24, 24, 16),
@@ -107,7 +109,7 @@ class HostGraph extends StatelessWidget {
               child: LineChart(
                 LineChartData(
                   gridData: FlGridData(
-                    show: true,
+                    show: showGrid,
                     drawVerticalLine: true,
                     getDrawingHorizontalLine: (value) => FlLine(
                       color: Colors.white.withValues(alpha: 0.05),

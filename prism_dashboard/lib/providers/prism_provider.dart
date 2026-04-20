@@ -10,14 +10,21 @@ class PrismProvider with ChangeNotifier {
   List<Alert> alerts = [];
   bool isConnected = false;
   ThemeMode _themeMode = ThemeMode.system;
+  bool _showGrid = true;
 
   ThemeMode get themeMode => _themeMode;
+  bool get showGrid => _showGrid;
 
   final List<int> ppsHistory = [];
   final List<double> cpuHistory = [];
 
   void setThemeMode(ThemeMode mode) {
     _themeMode = mode;
+    notifyListeners();
+  }
+
+  void setShowGrid(bool value) {
+    _showGrid = value;
     notifyListeners();
   }
 

@@ -54,8 +54,8 @@ class SettingsScreen extends StatelessWidget {
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Show Grid on Graphs'),
-                  value: true,
-                  onChanged: (v) {},
+                  value: provider.showGrid,
+                  onChanged: (v) => provider.setShowGrid(v),
                 ),
               ],
             ),
