@@ -8,6 +8,7 @@ class AlertFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,13 +26,13 @@ class AlertFeed extends StatelessWidget {
                       vertical: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.red.withValues(alpha: 0.1),
+                      color: colorScheme.errorContainer,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       '${alerts.length} NEW',
-                      style: const TextStyle(
-                        color: Colors.red,
+                      style: TextStyle(
+                        color: colorScheme.error,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),
@@ -43,10 +44,12 @@ class AlertFeed extends StatelessWidget {
           const Divider(height: 1),
           Expanded(
             child: alerts.isEmpty
-                ? const Center(
+                ? Center(
                     child: Text(
                       'No active incidents.',
-                      style: TextStyle(color: Colors.white24),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   )
                 : ListView.builder(
@@ -69,15 +72,16 @@ class _AlertItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final isHigh = alert.severity == AlertSeverity.high;
-    final color = isHigh ? Colors.red : Colors.orange;
+    final color = isHigh ? colorScheme.error : colorScheme.tertiary;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.02),
+        color: colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withValues(alpha: 0.1)),
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -118,13 +122,16 @@ class _AlertItem extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   alert.timestamp,
-                  style: const TextStyle(color: Colors.grey, fontSize: 10),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontSize: 10,
+                  ),
                 ),
                 const Spacer(),
                 Text(
                   alert.source.toUpperCase(),
-                  style: const TextStyle(
-                    color: Colors.white30,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.outline,
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                   ),
@@ -153,11 +160,17 @@ class _AlertItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text(
+              Text(
                 'EVENT: ',
-                style: TextStyle(color: Colors.grey, fontSize: 11),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 12,
+                ),
               ),
-              _InfoChip(label: kind, color: Colors.blueAccent),
+              _InfoChip(
+                label: kind,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -165,15 +178,15 @@ class _AlertItem extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.black26,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
               path,
-              style: const TextStyle(
-                fontFamily: 'monospace',
-                fontSize: 12,
-                color: Colors.greenAccent,
+              style: TextStyle(
+                fontFamily: 'maple mono',
+                fontSize: 14,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ),
@@ -196,9 +209,8 @@ class _InfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       child: Text(
         label,
