@@ -76,6 +76,7 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
+  bool _isExpanded = false;
 
   final List<Widget> _screens = [
     const NidsScreen(),
@@ -90,19 +91,22 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         children: [
           NavigationRail(
             selectedIndex: _selectedIndex,
+            extended: _isExpanded,
             onDestinationSelected: (int index) {
               setState(() {
                 _selectedIndex = index;
               });
             },
-            labelType: NavigationRailLabelType.selected,
-            leading: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24.0),
-              child: Icon(
-                Icons.security,
-                color: Theme.of(context).colorScheme.primary,
-                size: 32,
-              ),
+            labelType: _isExpanded ? NavigationRailLabelType.none : NavigationRailLabelType.selected,
+            leading: Column(
+              children: [
+                IconButton(
+                  icon: Icon(_isExpanded ? Icons.menu_open : Icons.menu),
+                  onPressed: () => setState(() => _isExpanded = !_isExpanded),
+                ),
+                const SizedBox(height: 16),
+                Icon(Icons.security, color: Theme.of(context).colorScheme.primary, size: 32),
+              ],
             ),
             destinations: const [
               NavigationRailDestination(
@@ -124,7 +128,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
           const VerticalDivider(thickness: 1, width: 1),
           Expanded(
-            child: IndexedStack(index: _selectedIndex, children: _screens),
+            child: IndexedStack(
+              index: _selectedIndex,
+              children: _screens,
+            ),
           ),
         ],
       ),
