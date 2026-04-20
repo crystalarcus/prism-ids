@@ -7,32 +7,33 @@ class TrafficGraph extends StatelessWidget {
   final PrismProvider provider;
   final String title;
   const TrafficGraph({super.key, required this.provider, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 24, 24, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: Theme.of(context).textTheme.titleSmall),
-            const SizedBox(height: 24),
-            Expanded(
-              child: LineChart(
-                LineChartData(
-                  gridData: FlGridData(
-                    show: true,
-                    drawVerticalLine: true,
-                    getDrawingHorizontalLine: (value) => FlLine(
-                      color: Colors.white.withValues(alpha: 0.05),
-                      strokeWidth: 1,
-                    ),
-                    getDrawingVerticalLine: (value) => FlLine(
-                      color: Colors.white.withValues(alpha: 0.05),
-                      strokeWidth: 1,
-                    ),
+@override
+Widget build(BuildContext context) {
+  final showGrid = Provider.of<PrismProvider>(context).showGrid;
+  return Card(
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(16, 24, 24, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: Theme.of(context).textTheme.titleSmall),
+          const SizedBox(height: 24),
+          Expanded(
+            child: LineChart(
+              LineChartData(
+                gridData: FlGridData(
+                  show: showGrid,
+                  drawVerticalLine: true,
+                  getDrawingHorizontalLine: (value) => FlLine(
+                    color: Colors.white.withValues(alpha: 0.05),
+                    strokeWidth: 1,
                   ),
+                  getDrawingVerticalLine: (value) => FlLine(
+                    color: Colors.white.withValues(alpha: 0.05),
+                    strokeWidth: 1,
+                  ),
+                ),
+
                   titlesData: FlTitlesData(
                     show: true,
                     rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -120,6 +121,7 @@ class HostGraph extends StatelessWidget {
                       strokeWidth: 1,
                     ),
                   ),
+
                   titlesData: FlTitlesData(
                     show: true,
                     rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
