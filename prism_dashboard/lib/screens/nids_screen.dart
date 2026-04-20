@@ -73,7 +73,7 @@ class NidsMetrics extends StatelessWidget {
                           value: net.pps > 0 ? e.value / net.pps : 0,
                           backgroundColor: Colors.white.withValues(alpha: 0.05),
                           minHeight: 6,
-                          color: _getProtocolColor(e.key),
+                          color: _getProtocolColor(context, e.key),
                         ),
                       ),
                     ],
@@ -87,13 +87,14 @@ class NidsMetrics extends StatelessWidget {
     );
   }
 
-  Color _getProtocolColor(String proto) {
+  Color _getProtocolColor(BuildContext context, String proto) {
+    final colors = Theme.of(context).colorScheme;
     switch (proto.toUpperCase()) {
-      case 'TCP': return Colors.blueAccent;
-      case 'UDP': return Colors.orangeAccent;
-      case 'ICMP': return Colors.purpleAccent;
-      case 'OTHER IP': return Colors.greenAccent;
-      default: return Colors.blueGrey;
+      case 'TCP': return colors.primary;
+      case 'UDP': return colors.secondary;
+      case 'ICMP': return colors.tertiary;
+      case 'OTHER IP': return colors.outline;
+      default: return colors.surfaceContainerHighest;
     }
   }
 }
