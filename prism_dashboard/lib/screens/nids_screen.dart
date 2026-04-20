@@ -47,20 +47,53 @@ class NidsMetrics extends StatelessWidget {
             ),
             const Spacer(),
             if (net != null) ...[
-              const Text('Protocols', style: TextStyle(color: Colors.grey, fontSize: 12)),
-              const SizedBox(height: 8),
-              ...net.protocols.entries.map((e) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: LinearProgressIndicator(
-                      value: e.value / (net.pps > 0 ? net.pps : 1),
-                      backgroundColor: Colors.white10,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  )),
+              const Text('Protocols (1s Window)', style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 16),
+              ...net.protocols.entries.map((e) {
+                final double percentage = net.pps > 0 ? (e.value / net.pps) * 100 : 0;
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(e.key, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+                          Text(
+                            '${percentage.toStringAsFixed(1)}% (${e.value})',
+                            style: const TextStyle(color: Colors.grey, fontSize: 11),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: LinearProgressIndicator(
+                          value: net.pps > 0 ? e.value / net.pps : 0,
+                          backgroundColor: Colors.white.withValues(alpha: 0.05),
+                          minHeight: 6,
+                          color: _getProtocolColor(e.key),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
             ],
           ],
         ),
       ),
     );
+  }
+
+  Color _getProtocolColor(String proto) {
+    switch (proto.toUpperCase()) {
+      case 'TCP': return Colors.blueAccent;
+      case 'UDP': return Colors.orangeAccent;
+      case 'ICMP': return Colors.purpleAccent;
+      case 'OTHER IP': return Colors.greenAccent;
+      default: return Colors.blueGrey;
+    }
   }
 }
