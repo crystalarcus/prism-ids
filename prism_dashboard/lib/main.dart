@@ -76,7 +76,6 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
-  bool _isExpanded = false;
 
   final List<Widget> _screens = [
     const NidsScreen(),
@@ -86,52 +85,44 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isWide = MediaQuery.of(context).size.width > 600;
+
     return Scaffold(
+      appBar: isWide ? null : AppBar(title: const Text('Prism IDS')),
+      drawer: isWide
+          ? null
+          : Drawer(
+              child: ListView(
+                children: [
+                  const DrawerHeader(child: Center(child: Text('PRISM IDS'))),
+                  ...List.generate(_screens.length, (index) => ListTile(
+                    selected: _selectedIndex == index,
+                    leading: Icon([Icons.lan, Icons.terminal, Icons.settings][index]),
+                    title: Text(['NIDS', 'HIDS', 'Settings'][index]),
+                    onTap: () {
+                      setState(() => _selectedIndex = index);
+                      Navigator.pop(context);
+                    },
+                  )),
+                ],
+              ),
+            ),
       body: Row(
         children: [
-          NavigationRail(
-            selectedIndex: _selectedIndex,
-            extended: _isExpanded,
-            onDestinationSelected: (int index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            labelType: _isExpanded ? NavigationRailLabelType.none : NavigationRailLabelType.selected,
-            leading: Column(
-              children: [
-                IconButton(
-                  icon: Icon(_isExpanded ? Icons.menu_open : Icons.menu),
-                  onPressed: () => setState(() => _isExpanded = !_isExpanded),
-                ),
-                const SizedBox(height: 16),
-                Icon(Icons.security, color: Theme.of(context).colorScheme.primary, size: 32),
+          if (isWide)
+            NavigationRail(
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: (int index) => setState(() => _selectedIndex = index),
+              labelType: NavigationRailLabelType.all,
+              destinations: const [
+                NavigationRailDestination(icon: Icon(Icons.lan), label: Text('NIDS')),
+                NavigationRailDestination(icon: Icon(Icons.terminal), label: Text('HIDS')),
+                NavigationRailDestination(icon: Icon(Icons.settings), label: Text('Settings')),
               ],
             ),
-            destinations: const [
-              NavigationRailDestination(
-                icon: Icon(Icons.lan_outlined),
-                selectedIcon: Icon(Icons.lan),
-                label: Text('NIDS'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.terminal_outlined),
-                selectedIcon: Icon(Icons.terminal),
-                label: Text('HIDS'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.settings_outlined),
-                selectedIcon: Icon(Icons.settings),
-                label: Text('Settings'),
-              ),
-            ],
-          ),
           const VerticalDivider(thickness: 1, width: 1),
           Expanded(
-            child: IndexedStack(
-              index: _selectedIndex,
-              children: _screens,
-            ),
+            child: IndexedStack(index: _selectedIndex, children: _screens),
           ),
         ],
       ),
