@@ -1,0 +1,27 @@
+# Root-level gitignore for Prism IDS
+
+# Rust (prism_engine)
+prism_engine/target/
+prism_engine/**/*.rs.bk
+prism_engine/Cargo.lock
+
+# Flutter (prism_dashboard)
+prism_dashboard/.dart_tool/
+prism_dashboard/.packages
+prism_dashboard/.pub-cache/
+prism_dashboard/.pub/
+prism_dashboard/build/
+prism_dashboard/linux/flutter/ephemeral/
+prism_dashboard/windows/flutter/ephemeral/
+prism_dashboard/linux/flutter/generated_config
+prism_dashboard/windows/flutter/generated_config.inc
+prism_dashboard/windows/flutter/generated_config.props
+prism_dashboard/windows/out/
+prism_dashboard/pubspec.lock
+
+# OS Files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.log
