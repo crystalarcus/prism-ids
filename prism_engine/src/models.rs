@@ -45,5 +45,6 @@ pub enum PrismData {
         network: NetworkMetrics,
         host: HostMetrics,
     },
+    #[serde(rename = "Alert")]
     Alert(Alert),
 }
