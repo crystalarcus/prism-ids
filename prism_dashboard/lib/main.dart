@@ -95,15 +95,20 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               child: ListView(
                 children: [
                   const DrawerHeader(child: Center(child: Text('PRISM IDS'))),
-                  ...List.generate(_screens.length, (index) => ListTile(
-                    selected: _selectedIndex == index,
-                    leading: Icon([Icons.lan, Icons.terminal, Icons.settings][index]),
-                    title: Text(['NIDS', 'HIDS', 'Settings'][index]),
-                    onTap: () {
-                      setState(() => _selectedIndex = index);
-                      Navigator.pop(context);
-                    },
-                  )),
+                  ...List.generate(
+                    _screens.length,
+                    (index) => ListTile(
+                      selected: _selectedIndex == index,
+                      leading: Icon(
+                        [Icons.lan, Icons.terminal, Icons.settings][index],
+                      ),
+                      title: Text(['NIDS', 'HIDS', 'Settings'][index]),
+                      onTap: () {
+                        setState(() => _selectedIndex = index);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -112,12 +117,32 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           if (isWide)
             NavigationRail(
               selectedIndex: _selectedIndex,
-              onDestinationSelected: (int index) => setState(() => _selectedIndex = index),
+              onDestinationSelected: (int index) =>
+                  setState(() => _selectedIndex = index),
               labelType: NavigationRailLabelType.all,
+              leading: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 24),
+                child: Column(
+                  children: [
+                    Icon(Icons.security, size: 32),
+                    SizedBox(height: 8),
+                    Text('PRISM', style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
               destinations: const [
-                NavigationRailDestination(icon: Icon(Icons.lan), label: Text('NIDS')),
-                NavigationRailDestination(icon: Icon(Icons.terminal), label: Text('HIDS')),
-                NavigationRailDestination(icon: Icon(Icons.settings), label: Text('Settings')),
+                NavigationRailDestination(
+                  icon: Icon(Icons.lan),
+                  label: Text('NIDS'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.terminal),
+                  label: Text('HIDS'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.settings),
+                  label: Text('Settings'),
+                ),
               ],
             ),
           const VerticalDivider(thickness: 1, width: 1),
