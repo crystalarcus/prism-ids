@@ -20,6 +20,7 @@ class PrismApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeMode = context.watch<PrismProvider>().themeMode;
+    final colors = Theme.of(context).colorScheme; // Access colorScheme here
 
     final darkTheme = ThemeData(
       useMaterial3: true,
@@ -33,9 +34,9 @@ class PrismApp extends StatelessWidget {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+          side: BorderSide(color: colors.onSurfaceVariant.withValues(alpha: 0.1)),
         ),
-        color: const Color(0xFF252429),
+        color: colors.surface.withValues(alpha: 0.02),
       ),
     );
 
@@ -50,9 +51,9 @@ class PrismApp extends StatelessWidget {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: Colors.black.withValues(alpha: 0.05)),
+          side: BorderSide(color: colors.onSurfaceVariant.withValues(alpha: 0.05)),
         ),
-        color: Colors.white,
+        color: colors.surface,
       ),
     );
 
@@ -65,8 +66,7 @@ class PrismApp extends StatelessWidget {
       home: const MainNavigationScreen(),
     );
   }
-}
-
+  }
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
 
@@ -126,7 +126,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   children: [
                     Icon(Icons.security, size: 32),
                     SizedBox(height: 8),
-                    Text('PRISM', style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(
+                      'PRISM',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
               ),

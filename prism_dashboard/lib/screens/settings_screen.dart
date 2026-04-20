@@ -10,6 +10,8 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<PrismProvider>();
+    final colors = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Column(
@@ -37,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Theme Mode', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                Text('Theme Mode', style: TextStyle(color: colors.onSurfaceVariant, fontSize: 13)),
                 const SizedBox(height: 12),
                 SegmentedButton<ThemeMode>(
                   segments: const [
@@ -53,7 +55,7 @@ class SettingsScreen extends StatelessWidget {
                 const SizedBox(height: 24),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text('Show Grid on Graphs'),
+                  title: Text('Show Grid on Graphs', style: TextStyle(color: colors.onSurfaceVariant, fontSize: 14)),
                   value: provider.showGrid,
                   onChanged: (v) => provider.setShowGrid(v),
                 ),
