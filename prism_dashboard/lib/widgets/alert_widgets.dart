@@ -20,14 +20,21 @@ class AlertFeed extends StatelessWidget {
                 Text(title, style: Theme.of(context).textTheme.titleSmall),
                 if (alerts.isNotEmpty)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.red.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       '${alerts.length} NEW',
-                      style: const TextStyle(color: Colors.red, fontSize: 10, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
               ],
@@ -37,7 +44,10 @@ class AlertFeed extends StatelessWidget {
           Expanded(
             child: alerts.isEmpty
                 ? const Center(
-                    child: Text('No active incidents.', style: TextStyle(color: Colors.white24)),
+                    child: Text(
+                      'No active incidents.',
+                      style: TextStyle(color: Colors.white24),
+                    ),
                   )
                 : ListView.builder(
                     padding: const EdgeInsets.all(12),
@@ -77,7 +87,10 @@ class _AlertItem extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6),
@@ -85,12 +98,19 @@ class _AlertItem extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(isHigh ? Icons.gpp_maybe : Icons.warning_amber_rounded, 
-                           color: color, size: 14),
+                      Icon(
+                        isHigh ? Icons.gpp_maybe : Icons.warning_amber_rounded,
+                        color: color,
+                        size: 14,
+                      ),
                       const SizedBox(width: 6),
                       Text(
                         alert.severity.name.toUpperCase(),
-                        style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          color: color,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -103,7 +123,11 @@ class _AlertItem extends StatelessWidget {
                 const Spacer(),
                 Text(
                   alert.source.toUpperCase(),
-                  style: const TextStyle(color: Colors.white30, fontSize: 10, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Colors.white30,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -117,7 +141,7 @@ class _AlertItem extends StatelessWidget {
 
   Widget _buildMessageBody(BuildContext context) {
     final msg = alert.message;
-    
+
     // Parse FIM: "File changed: Kind | Path: [path]"
     if (alert.source.toLowerCase() == 'fim' && msg.contains('|')) {
       final parts = msg.split('|');
@@ -129,7 +153,10 @@ class _AlertItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text('EVENT: ', style: TextStyle(color: Colors.grey, fontSize: 11)),
+              const Text(
+                'EVENT: ',
+                style: TextStyle(color: Colors.grey, fontSize: 11),
+              ),
               _InfoChip(label: kind, color: Colors.blueAccent),
             ],
           ),
@@ -143,7 +170,11 @@ class _AlertItem extends StatelessWidget {
             ),
             child: Text(
               path,
-              style: const TextStyle(fontFamily: 'monospace', fontSize: 12, color: Colors.greenAccent),
+              style: const TextStyle(
+                fontFamily: 'monospace',
+                fontSize: 12,
+                color: Colors.greenAccent,
+              ),
             ),
           ),
         ],
@@ -151,10 +182,7 @@ class _AlertItem extends StatelessWidget {
     }
 
     // Default or HIDS/NIDS highlight
-    return Text(
-      msg,
-      style: const TextStyle(fontSize: 14, height: 1.4),
-    );
+    return Text(msg, style: const TextStyle(fontSize: 14, height: 1.4));
   }
 }
 
@@ -174,7 +202,11 @@ class _InfoChip extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          color: color,
+          fontSize: 11,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
