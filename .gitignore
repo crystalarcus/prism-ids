@@ -25,3 +25,6 @@ prism_dashboard/pubspec.lock
 .vscode/
 *.swp
 *.log
+
+# Test Directory
+prism_watch/

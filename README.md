@@ -5,14 +5,17 @@ Prism is a high-performance Hybrid Intrusion Detection System (IDS) designed for
 ## Features
 
 - **Network IDS (NIDS):** Real-time packet capture and protocol analysis (TCP/UDP/ICMP).
-- **Host IDS (HIDS):** System health monitoring, process tracking, and file integrity checks.
+- **Host IDS (HIDS):** System health monitoring, process tracking, and **File Integrity Monitoring (FIM)**.
 - **Real-time Visualization:** Live traffic graphs and system metrics via a Flutter desktop GUI.
-- **Alerting System:** Threshold-based alerts for suspicious activities (e.g., SYN floods, high resource usage).
-- **Cross-Platform:** Built with Rust and Flutter to support Linux and Windows.
+- **Alerting System:** Threshold-based alerts and real-time notifications for unauthorized file changes.
+
+## File Integrity Monitoring (HIDS/FIM)
+
+The engine automatically creates and watches a `./prism_watch` directory in the project root. Any creation, modification, or deletion of files within this folder will trigger a **High Severity Alert** on the Dashboard.
 
 ## Architecture
 
-- **`prism_engine` (Rust):** The core analysis service. It runs with elevated privileges to capture network traffic and monitor system resources. It streams data over WebSockets to the dashboard.
+- **`prism_engine` (Rust):** The core analysis service. It runs with elevated privileges to capture network traffic, monitor system resources, and watch for file changes. It streams data over WebSockets to the dashboard.
 - **`prism_dashboard` (Flutter):** The graphical user interface. It connects to the engine to provide a user-friendly view of the system's security posture.
 
 ## Prerequisites

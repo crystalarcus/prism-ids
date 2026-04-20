@@ -4,28 +4,38 @@ mod host;
 
 use crate::models::{PrismData, Alert, AlertSeverity};
 use crate::network::NidsEngine;
-use crate::host::HidsEngine;
+use crate::host::{HidsEngine, FimEngine};
 
 use futures_util::{SinkExt, StreamExt};
 use tokio::net::TcpListener;
 use tokio::sync::broadcast;
 use tokio_tungstenite::accept_async;
 use chrono::Local;
+use std::fs;
 
 #[tokio::main]
 async fn main() {
     println!("Prism Engine starting...");
 
+    // Create watch directory if it doesn't exist
+    let watch_path = "./prism_watch";
+    if let Err(_) = fs::create_dir_all(watch_path) {
+        println!("Warning: Could not create watch directory {}", watch_path);
+    }
+
     // 1. Initialize Engines
     let nids = NidsEngine::new();
     let hids = HidsEngine::new();
 
-    nids.start();
-    hids.start();
-
     // 2. Setup Broadcast Channel for WebSocket clients
     let (tx, _rx) = broadcast::channel::<PrismData>(100);
     let tx_clone = tx.clone();
+    
+    let fim = FimEngine::new(tx.clone());
+
+    nids.start();
+    hids.start();
+    fim.start(watch_path.to_string());
 
     // 3. Background Task: Collect Metrics and Detect Alerts
     let nids_metrics = nids.metrics.clone();
