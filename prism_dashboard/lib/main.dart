@@ -62,9 +62,7 @@ class DashboardScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Expanded(
-              child: _AlertFeed(alerts: provider.alerts),
-            ),
+            Expanded(child: _AlertFeed(alerts: provider.alerts)),
           ],
         ),
       ),
@@ -113,17 +111,29 @@ class _MetricsCard extends StatelessWidget {
             Text('Live Metrics', style: Theme.of(context).textTheme.titleLarge),
             const Divider(),
             _MetricRow(label: 'Network PPS', value: '${net?.pps ?? 0}'),
-            _MetricRow(label: 'Bandwidth', value: '${((net?.bps ?? 0) / 1024).toStringAsFixed(2)} Kbps'),
-            _MetricRow(label: 'CPU Usage', value: '${host?.cpuUsage.toStringAsFixed(1) ?? 0}%'),
-            _MetricRow(label: 'RAM Usage', value: '${((host?.memoryUsage ?? 0) / (1024 * 1024)).toStringAsFixed(0)} MB'),
+            _MetricRow(
+              label: 'Bandwidth',
+              value: '${((net?.bps ?? 0) / 1024).toStringAsFixed(2)} Kbps',
+            ),
+            _MetricRow(
+              label: 'CPU Usage',
+              value: '${host?.cpuUsage.toStringAsFixed(1) ?? 0}%',
+            ),
+            _MetricRow(
+              label: 'RAM Usage',
+              value:
+                  '${((host?.memoryUsage ?? 0) / (1024 * 1024)).toStringAsFixed(0)} MB',
+            ),
             const Spacer(),
             if (host != null) ...[
               const Text('Top Processes:'),
-              ...host.topProcesses.map((p) => Text(
-                '${p.name}: ${p.cpuUsage.toStringAsFixed(1)}%',
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
-              )),
-            ]
+              ...host.topProcesses.map(
+                (p) => Text(
+                  '${p.name}: ${p.cpuUsage.toStringAsFixed(1)}%',
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -144,7 +154,14 @@ class _MetricRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: const TextStyle(color: Colors.grey)),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.cyan)),
+          Text(
+            value,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Colors.cyan,
+            ),
+          ),
         ],
       ),
     );
@@ -203,12 +220,20 @@ class _AlertFeed extends StatelessWidget {
         children: [
           const Padding(
             padding: EdgeInsets.all(12.0),
-            child: Text('Security Incident Feed', style: TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(
+              'Security Incident Feed',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
           const Divider(height: 1),
           Expanded(
             child: alerts.isEmpty
-                ? const Center(child: Text('No incidents detected.', style: TextStyle(color: Colors.grey)))
+                ? const Center(
+                    child: Text(
+                      'No incidents detected.',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  )
                 : ListView.builder(
                     itemCount: alerts.length,
                     itemBuilder: (context, index) {
@@ -216,10 +241,14 @@ class _AlertFeed extends StatelessWidget {
                       return ListTile(
                         leading: Icon(
                           Icons.warning,
-                          color: alert.severity == AlertSeverity.high ? Colors.red : Colors.orange,
+                          color: alert.severity == AlertSeverity.high
+                              ? Colors.red
+                              : Colors.orange,
                         ),
                         title: Text(alert.message),
-                        subtitle: Text('${alert.timestamp} | Source: ${alert.source}'),
+                        subtitle: Text(
+                          '${alert.timestamp} | Source: ${alert.source}',
+                        ),
                         dense: true,
                       );
                     },

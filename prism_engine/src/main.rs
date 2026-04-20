@@ -18,7 +18,7 @@ async fn main() {
     println!("Prism Engine starting...");
 
     // Create watch directory if it doesn't exist
-    let watch_path = "./prism_watch";
+    let watch_path = "../prism_watch";
     if let Err(_) = fs::create_dir_all(watch_path) {
         println!("Warning: Could not create watch directory {}", watch_path);
     }
