@@ -33,17 +33,28 @@ class SettingsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           SettingsCard(
-            title: 'Display Preferences',
+            title: 'Appearance',
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const Text('Theme Mode', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                const SizedBox(height: 12),
+                SegmentedButton<ThemeMode>(
+                  segments: const [
+                    ButtonSegment(value: ThemeMode.system, label: Text('System'), icon: Icon(Icons.brightness_auto)),
+                    ButtonSegment(value: ThemeMode.light, label: Text('Light'), icon: Icon(Icons.light_mode)),
+                    ButtonSegment(value: ThemeMode.dark, label: Text('Dark'), icon: Icon(Icons.dark_mode)),
+                  ],
+                  selected: {provider.themeMode},
+                  onSelectionChanged: (Set<ThemeMode> newSelection) {
+                    provider.setThemeMode(newSelection.first);
+                  },
+                ),
+                const SizedBox(height: 24),
                 SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
                   title: const Text('Show Grid on Graphs'),
                   value: true,
-                  onChanged: (v) {},
-                ),
-                SwitchListTile(
-                  title: const Text('High Contrast Mode'),
-                  value: false,
                   onChanged: (v) {},
                 ),
               ],
@@ -54,3 +65,4 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 }
+

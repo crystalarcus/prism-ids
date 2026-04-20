@@ -9,9 +9,17 @@ class PrismProvider with ChangeNotifier {
   HostMetrics? latestHost;
   List<Alert> alerts = [];
   bool isConnected = false;
+  ThemeMode _themeMode = ThemeMode.system;
+
+  ThemeMode get themeMode => _themeMode;
 
   final List<int> ppsHistory = [];
   final List<double> cpuHistory = [];
+
+  void setThemeMode(ThemeMode mode) {
+    _themeMode = mode;
+    notifyListeners();
+  }
 
   void connect() {
     try {
