@@ -2,6 +2,8 @@ mod models;
 mod network;
 mod host;
 
+use std::env;
+
 use crate::models::{PrismData, Alert, AlertSeverity};
 use crate::network::NidsEngine;
 use crate::host::{HidsEngine, FimEngine};
@@ -17,10 +19,19 @@ use std::fs;
 async fn main() {
     println!("Prism Engine starting...");
 
+    // Parse command-line arguments for watch path
+    let args: Vec<String> = env::args().collect();
+    let watch_path = if args.len() > 1 {
+        args[1].clone() // Use the first argument as the watch path
+    } else {
+        "../prism_watch".to_string() // Default path
+    };
+
+    println!("Watching directory: {}", watch_path);
+
     // Create watch directory if it doesn't exist
-    let watch_path = "../prism_watch";
-    if let Err(_) = fs::create_dir_all(watch_path) {
-        println!("Warning: Could not create watch directory {}", watch_path);
+    if let Err(e) = fs::create_dir_all(&watch_path) {
+        println!("Warning: Could not create watch directory {}: {}", watch_path, e);
     }
 
     // 1. Initialize Engines

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart'; // Import file_picker
+import 'package:path_provider/path_provider.dart' as path_provider; // Import path_provider
 import '../providers/prism_provider.dart';
 import '../widgets/screen_layout.dart';
 import '../widgets/metrics_widgets.dart';
@@ -26,13 +28,55 @@ class NidsScreen extends StatelessWidget {
   }
 }
 
-class NidsMetrics extends StatelessWidget {
+// Make NidsMetrics a StatefulWidget to manage the selected directory
+class NidsMetrics extends StatefulWidget {
   final PrismProvider provider;
   const NidsMetrics({super.key, required this.provider});
 
   @override
+  State<NidsMetrics> createState() => _NidsMetricsState();
+}
+
+class _NidsMetricsState extends State<NidsMetrics> {
+  String? _selectedDirectory; // State variable to hold the selected directory
+
+  // Method to pick a directory
+  Future<void> _pickDirectory() async {
+    // Request storage permissions if necessary (platform-dependent)
+    // For simplicity, we are directly calling getDirectoryPath here.
+    // On Android, you might need to request specific storage permissions.
+
+    final directoryPath = await FilePicker.platform.getDirectoryPath(
+      dialogTitle: 'Select Folder to Monitor',
+      // Use initialDirectory from state if available, otherwise a default path.
+      // '/home' might not be a valid initial directory on all platforms.
+      // Consider using path_provider to get a more appropriate default.
+      initialDirectory: _selectedDirectory ?? '/', 
+    );
+
+    if (directoryPath != null) {
+      setState(() {
+        _selectedDirectory = directoryPath;
+      });
+      
+      // TODO: Implement communication to send _selectedDirectory to the Rust engine.
+      // This might involve:
+      // 1. Relaunching the Rust engine process with the new path as a command-line argument.
+      // 2. Sending a message to a running engine process via IPC (e.g., stdin, a dedicated channel).
+      // For now, we are just storing the path in the UI state.
+      print('Selected directory for monitoring: $directoryPath');
+      
+      // Example placeholder for engine communication:
+      // await restartEngineWithNewPath(directoryPath); 
+    } else {
+      // User canceled the picker
+      print('Directory selection canceled.');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final net = provider.latestNetwork;
+    final net = widget.provider.latestNetwork;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -91,7 +135,9 @@ class NidsMetrics extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                         child: LinearProgressIndicator(
                           value: net.pps > 0 ? e.value / net.pps : 0,
-                          backgroundColor: Colors.white.withValues(alpha: 0.05),
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.surfaceContainer,
                           minHeight: 6,
                           color: _getProtocolColor(context, e.key),
                         ),
@@ -101,6 +147,24 @@ class NidsMetrics extends StatelessWidget {
                 );
               }),
             ],
+            // Button to select directory
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: _pickDirectory,
+              icon: const Icon(Icons.folder_open),
+              label: Text(_selectedDirectory == null ? 'Select Watch Folder' : 'Change Folder'),
+            ),
+            const SizedBox(height: 10),
+            // Display the selected directory
+            if (_selectedDirectory != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  'Currently monitoring: $_selectedDirectory',
+                  style: Theme.of(context).textTheme.bodySmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
           ],
         ),
       ),

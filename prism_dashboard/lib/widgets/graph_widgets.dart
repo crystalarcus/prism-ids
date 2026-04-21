@@ -7,37 +7,45 @@ class TrafficGraph extends StatelessWidget {
   final PrismProvider provider;
   final String title;
   const TrafficGraph({super.key, required this.provider, required this.title});
-@override
-Widget build(BuildContext context) {
-  final showGrid = Provider.of<PrismProvider>(context).showGrid;
-  return Card(
-    child: Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 24, 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: Theme.of(context).textTheme.titleSmall),
-          const SizedBox(height: 24),
-          Expanded(
-            child: LineChart(
-              LineChartData(
-                gridData: FlGridData(
-                  show: showGrid,
-                  drawVerticalLine: true,
-                  getDrawingHorizontalLine: (value) => FlLine(
-                    color: Colors.white.withValues(alpha: 0.05),
-                    strokeWidth: 1,
+  @override
+  Widget build(BuildContext context) {
+    final showGrid = Provider.of<PrismProvider>(context).showGrid;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 24, 24, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 24),
+            Expanded(
+              child: LineChart(
+                LineChartData(
+                  gridData: FlGridData(
+                    show: showGrid,
+                    drawVerticalLine: true,
+                    getDrawingHorizontalLine: (value) => FlLine(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outlineVariant.withAlpha(100),
+                      strokeWidth: 1,
+                    ),
+                    getDrawingVerticalLine: (value) => FlLine(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outlineVariant.withAlpha(100),
+                      strokeWidth: 1,
+                    ),
                   ),
-                  getDrawingVerticalLine: (value) => FlLine(
-                    color: Colors.white.withValues(alpha: 0.05),
-                    strokeWidth: 1,
-                  ),
-                ),
 
                   titlesData: FlTitlesData(
                     show: true,
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
@@ -47,7 +55,10 @@ Widget build(BuildContext context) {
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
                             '${value.toInt()}s',
-                            style: const TextStyle(color: Colors.grey, fontSize: 10),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.outline,
+                              fontSize: 10,
+                            ),
                           ),
                         ),
                       ),
@@ -58,7 +69,10 @@ Widget build(BuildContext context) {
                         interval: 500,
                         getTitlesWidget: (value, meta) => Text(
                           value.toInt().toString(),
-                          style: const TextStyle(color: Colors.grey, fontSize: 10),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.outline,
+                            fontSize: 10,
+                          ),
                         ),
                         reservedSize: 42,
                       ),
@@ -77,7 +91,9 @@ Widget build(BuildContext context) {
                       dotData: const FlDotData(show: false),
                       belowBarData: BarAreaData(
                         show: true,
-                        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.1),
                       ),
                     ),
                   ],
@@ -104,7 +120,10 @@ class HostGraph extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('CPU Usage History (%)', style: Theme.of(context).textTheme.titleSmall),
+            Text(
+              'CPU Usage History (%)',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
             const SizedBox(height: 24),
             Expanded(
               child: LineChart(
@@ -113,19 +132,27 @@ class HostGraph extends StatelessWidget {
                     show: showGrid,
                     drawVerticalLine: true,
                     getDrawingHorizontalLine: (value) => FlLine(
-                      color: Colors.white.withValues(alpha: 0.05),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outlineVariant.withAlpha(100),
                       strokeWidth: 1,
                     ),
                     getDrawingVerticalLine: (value) => FlLine(
-                      color: Colors.white.withValues(alpha: 0.05),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outlineVariant.withAlpha(100),
                       strokeWidth: 1,
                     ),
                   ),
 
                   titlesData: FlTitlesData(
                     show: true,
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
@@ -135,7 +162,10 @@ class HostGraph extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
                             '${value.toInt()}s',
-                            style: const TextStyle(color: Colors.grey, fontSize: 10),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontSize: 10,
+                            ),
                           ),
                         ),
                       ),
@@ -146,7 +176,10 @@ class HostGraph extends StatelessWidget {
                         interval: 20,
                         getTitlesWidget: (value, meta) => Text(
                           '${value.toInt()}%',
-                          style: const TextStyle(color: Colors.grey, fontSize: 10),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.outline,
+                            fontSize: 10,
+                          ),
                         ),
                         reservedSize: 42,
                       ),

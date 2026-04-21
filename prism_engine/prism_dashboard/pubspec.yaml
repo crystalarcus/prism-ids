@@ -1,0 +1,55 @@
+name: prism_dashboard
+description: A new Flutter project.
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  provider: ^6.0.5
+  # Add file_picker for directory selection
+  file_picker: ^6.1.1 
+  # For WebSocket communication (if needed later)
+  web_socket_channel: ^2.7.0 
+  # For JSON serialization
+  json_serializable: ^6.7.1
+  # For date formatting
+  intl: ^0.18.1
+  # For graph widgets (example, might need actual package)
+  fl_chart: ^0.63.0 
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+  build_runner: ^2.4.6 # For code generation with json_serializable
+  json_serializable: ^6.7.1
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  fonts:
+    - family: Schyler
+      fonts:
+        - asset: fonts/Schyler-Regular.ttf
+        - asset: fonts/Schyler-Italic.ttf
+          style: italic
+    - family: Trajan Pro
+      fonts:
+        - asset: fonts/TrajanPro.ttf
+          weight: 700
+    - family: MaterialIcons
+      fonts:
+        - asset: .fsi/fonts/MaterialIcons-Regular.otf
