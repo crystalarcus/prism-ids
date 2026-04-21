@@ -11,7 +11,27 @@ Prism is a high-performance Hybrid Intrusion Detection System (IDS) designed for
 
 ## File Integrity Monitoring (HIDS/FIM)
 
-The engine automatically creates and watches a `./prism_watch` directory in the project root. Any creation, modification, or deletion of files within this folder will trigger a **High Severity Alert** on the Dashboard.
+The engine can monitor a specified directory for file integrity changes.
+
+### 1. Start the Engine (Rust)
+
+**Usage with default watch directory:**
+The engine will create and watch a `./prism_watch` directory in the project root by default.
+```bash
+cd prism_engine
+cargo run
+```
+*Note: Network capture may require `sudo` on Linux.*
+
+**Usage with custom watch directory:**
+You can configure the engine to watch a different directory by providing the path as a command-line argument when running the executable.
+
+```bash
+# After building the engine (e.g., with 'cargo build')
+cd prism_engine/target/debug # or target/release
+./prism_engine /path/to/your/custom/watch/folder
+```
+Replace `/path/to/your/custom/watch/folder` with the actual directory you want the engine to monitor. If no argument is provided, it will default to watching `./prism_watch`.
 
 ## Architecture
 
@@ -27,13 +47,6 @@ The engine automatically creates and watches a `./prism_watch` directory in the 
   - Windows: `Npcap` (SDK)
 
 ## Getting Started
-
-### 1. Start the Engine (Rust)
-```bash
-cd prism_engine
-cargo run
-```
-*Note: Network capture may require `sudo` on Linux.*
 
 ### 2. Launch the Dashboard (Flutter)
 ```bash
