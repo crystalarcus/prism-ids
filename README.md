@@ -5,13 +5,28 @@ Prism is a high-performance Hybrid Intrusion Detection System (IDS) designed for
 ## Features
 
 - **Network IDS (NIDS):** Real-time packet capture and protocol analysis (TCP/UDP/ICMP).
-- **Host IDS (HIDS):** System health monitoring, process tracking, and **File Integrity Monitoring (FIM)**.
+- **Host IDS (HIDS):** System health monitoring, process tracking, **File Integrity Monitoring (FIM)**, and **Authentication Log Monitoring**.
 - **Real-time Visualization:** Live traffic graphs and system metrics via a Flutter desktop GUI.
-- **Alerting System:** Threshold-based alerts and real-time notifications for unauthorized file changes.
+- **Alerting System:** Threshold-based alerts, unauthorized file changes, and brute-force detection.
 
-## File Integrity Monitoring (HIDS/FIM)
+## Host Intrusion Detection (HIDS)
 
+### File Integrity Monitoring (FIM)
 The engine can monitor a specified directory for file integrity changes.
+
+### Authentication Log Monitoring
+The HIDS engine now monitors system authentication logs for:
+- **Failed Sudo Attempts:** Alerts on incorrect passwords and unauthorized users.
+- **Login Failures:** Tracks failed login attempts across the system.
+- **Brute Force Detection:** Automatically generates a high-severity alert after 3 consecutive failures.
+
+**Platform Support:**
+- **Debian/Ubuntu:** Monitors `/var/log/auth.log`.
+- **RHEL/CentOS:** Monitors `/var/log/secure`.
+- **Arch Linux/Generic Systemd:** Falls back to `journalctl` monitoring automatically.
+
+*Note: Auth monitoring requires root privileges to read system logs.*
+
 
 ### 1. Start the Engine (Rust)
 

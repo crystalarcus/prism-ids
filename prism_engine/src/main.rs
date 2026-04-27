@@ -6,7 +6,7 @@ use std::env;
 
 use crate::models::{PrismData, Alert, AlertSeverity};
 use crate::network::NidsEngine;
-use crate::host::{HidsEngine, FimEngine};
+use crate::host::{HidsEngine, FimEngine, AuthLogEngine};
 
 use futures_util::{SinkExt, StreamExt};
 use tokio::net::TcpListener;
@@ -43,10 +43,12 @@ async fn main() {
     let tx_clone = tx.clone();
     
     let fim = FimEngine::new(tx.clone());
+    let auth_log = AuthLogEngine::new(tx.clone());
 
     nids.start();
     hids.start();
     fim.start(watch_path.to_string());
+    auth_log.start();
 
     // 3. Background Task: Collect Metrics and Detect Alerts
     let nids_metrics = nids.metrics.clone();
