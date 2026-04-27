@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart'; // Import file_picker
-import 'package:path_provider/path_provider.dart' as path_provider; // Import path_provider
+import 'package:path_provider/path_provider.dart'
+    as path_provider; // Import path_provider
 import '../providers/prism_provider.dart';
 import '../widgets/screen_layout.dart';
 import '../widgets/metrics_widgets.dart';
@@ -46,28 +47,28 @@ class _NidsMetricsState extends State<NidsMetrics> {
     // For simplicity, we are directly calling getDirectoryPath here.
     // On Android, you might need to request specific storage permissions.
 
-    final directoryPath = await FilePicker.platform.getDirectoryPath(
+    final directoryPath = await FilePicker.getDirectoryPath(
       dialogTitle: 'Select Folder to Monitor',
       // Use initialDirectory from state if available, otherwise a default path.
       // '/home' might not be a valid initial directory on all platforms.
       // Consider using path_provider to get a more appropriate default.
-      initialDirectory: _selectedDirectory ?? '/', 
+      initialDirectory: _selectedDirectory ?? '/',
     );
 
     if (directoryPath != null) {
       setState(() {
         _selectedDirectory = directoryPath;
       });
-      
+
       // TODO: Implement communication to send _selectedDirectory to the Rust engine.
       // This might involve:
       // 1. Relaunching the Rust engine process with the new path as a command-line argument.
       // 2. Sending a message to a running engine process via IPC (e.g., stdin, a dedicated channel).
       // For now, we are just storing the path in the UI state.
       print('Selected directory for monitoring: $directoryPath');
-      
+
       // Example placeholder for engine communication:
-      // await restartEngineWithNewPath(directoryPath); 
+      // await restartEngineWithNewPath(directoryPath);
     } else {
       // User canceled the picker
       print('Directory selection canceled.');
@@ -149,11 +150,15 @@ class _NidsMetricsState extends State<NidsMetrics> {
             ],
             // Button to select directory
             const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: _pickDirectory,
-              icon: const Icon(Icons.folder_open),
-              label: Text(_selectedDirectory == null ? 'Select Watch Folder' : 'Change Folder'),
-            ),
+            // ElevatedButton.icon(
+            //   onPressed: _pickDirectory,
+            //   icon: const Icon(Icons.folder_open),
+            //   label: Text(
+            //     _selectedDirectory == null
+            //         ? 'Select Watch Folder'
+            //         : 'Change Folder',
+            //   ),
+            // ),
             const SizedBox(height: 10),
             // Display the selected directory
             if (_selectedDirectory != null)
