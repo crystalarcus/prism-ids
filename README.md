@@ -7,7 +7,11 @@ Prism is a high-performance Hybrid Intrusion Detection System (IDS) designed for
 - **Network IDS (NIDS):** Real-time packet capture and protocol analysis (TCP/UDP/ICMP).
 - **Host IDS (HIDS):** System health monitoring, process tracking, **File Integrity Monitoring (FIM)**, and **Authentication Log Monitoring**.
 - **Real-time Visualization:** Live traffic graphs and system metrics via a Flutter desktop GUI.
-- **Alerting System:** Threshold-based alerts, unauthorized file changes, and brute-force detection.
+- **Alerting System:**
+  - **Dynamic Severity:** Optimized severity levels (e.g., FIM creation is Medium, while modifications/deletions and failed logins are High).
+  - **Status Management:** Track alerts with "Resolved" and "Unresolved" states using Material 3 selection widgets.
+  - **Expanded View:** Toggle alert sections to full-screen height for deep-dive analysis in both HIDS and NIDS views.
+  - **Smart Badges:** Real-time counters that focus only on unresolved security incidents.
 
 ## Host Intrusion Detection (HIDS)
 

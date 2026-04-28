@@ -6,6 +6,7 @@ class ScreenLayout extends StatelessWidget {
   final Widget metrics;
   final Widget graph;
   final Widget alerts;
+  final bool isExpanded;
 
   const ScreenLayout({
     super.key,
@@ -13,6 +14,7 @@ class ScreenLayout extends StatelessWidget {
     required this.metrics,
     required this.graph,
     required this.alerts,
+    this.isExpanded = false,
   });
 
   @override
@@ -34,14 +36,18 @@ class ScreenLayout extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(width: 300, child: metrics),
-                const SizedBox(width: 24),
+                if (!isExpanded) ...[
+                  SizedBox(width: 300, child: metrics),
+                  const SizedBox(width: 24),
+                ],
                 Expanded(
                   child: Column(
                     children: [
-                      Expanded(flex: 3, child: graph),
-                      const SizedBox(height: 24),
-                      Expanded(flex: 2, child: alerts),
+                      if (!isExpanded) ...[
+                        Expanded(flex: 3, child: graph),
+                        const SizedBox(height: 24),
+                      ],
+                      Expanded(flex: isExpanded ? 1 : 2, child: alerts),
                     ],
                   ),
                 ),

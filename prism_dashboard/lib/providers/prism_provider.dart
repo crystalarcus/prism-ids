@@ -64,6 +64,14 @@ class PrismProvider with ChangeNotifier {
     });
   }
 
+  void updateAlertStatus(Alert alert, AlertStatus status) {
+    final index = alerts.indexOf(alert);
+    if (index != -1) {
+      alerts[index] = alert.copyWith(status: status);
+      notifyListeners();
+    }
+  }
+
   void _handleUpdate(String data) {
     try {
       final update = PrismUpdate.fromJson(data);

@@ -91,10 +91,16 @@ impl FimEngine {
                                 .map(|p| p.to_string_lossy().into_owned())
                                 .collect();
                             
+                            let severity = if event.kind.is_create() {
+                                AlertSeverity::Medium
+                            } else {
+                                AlertSeverity::High
+                            };
+
                             let msg = format!("File changed: {:?} | Path: {:?}", event.kind, paths);
                             let alert = Alert {
                                 timestamp: Local::now().format("%Y-%m-%d %H:%M:%S").to_string(),
-                                severity: AlertSeverity::High,
+                                severity,
                                 source: "FIM".to_string(),
                                 message: msg,
                             };
@@ -190,7 +196,7 @@ impl AuthLogEngine {
     fn process_line(line: &str, failure_count: &mut i32, tx: &broadcast::Sender<PrismData>) {
         let lower_line = line.to_lowercase();
         let mut alert_msg = None;
-        let mut severity = AlertSeverity::Medium;
+        let mut severity = AlertSeverity::High;
 
         if lower_line.contains("sudo") && lower_line.contains("user not in sudoers") {
             alert_msg = Some(format!("Unauthorized sudo attempt: {}", line.trim()));

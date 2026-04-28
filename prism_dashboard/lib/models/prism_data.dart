@@ -54,13 +54,38 @@ class ProcessInfo {
 
 enum AlertSeverity { low, medium, high }
 
+enum AlertStatus { unresolved, resolved }
+
 class Alert {
   final String timestamp;
   final AlertSeverity severity;
   final String source;
   final String message;
+  final AlertStatus status;
 
-  Alert({required this.timestamp, required this.severity, required this.source, required this.message});
+  Alert({
+    required this.timestamp,
+    required this.severity,
+    required this.source,
+    required this.message,
+    this.status = AlertStatus.unresolved,
+  });
+
+  Alert copyWith({
+    String? timestamp,
+    AlertSeverity? severity,
+    String? source,
+    String? message,
+    AlertStatus? status,
+  }) {
+    return Alert(
+      timestamp: timestamp ?? this.timestamp,
+      severity: severity ?? this.severity,
+      source: source ?? this.source,
+      message: message ?? this.message,
+      status: status ?? this.status,
+    );
+  }
 
   factory Alert.fromJson(Map<String, dynamic> json) {
     return Alert(
@@ -68,6 +93,7 @@ class Alert {
       severity: _parseSeverity(json['severity'] as String),
       source: json['source'] as String,
       message: json['message'] as String,
+      status: AlertStatus.unresolved,
     );
   }
 

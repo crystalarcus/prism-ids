@@ -6,14 +6,22 @@ import '../widgets/metrics_widgets.dart';
 import '../widgets/graph_widgets.dart';
 import '../widgets/alert_widgets.dart';
 
-class HidsScreen extends StatelessWidget {
+class HidsScreen extends StatefulWidget {
   const HidsScreen({super.key});
+
+  @override
+  State<HidsScreen> createState() => _HidsScreenState();
+}
+
+class _HidsScreenState extends State<HidsScreen> {
+  bool _isAlertsExpanded = false;
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<PrismProvider>();
     return ScreenLayout(
       title: 'Host IDS',
+      isExpanded: _isAlertsExpanded,
       metrics: HidsMetrics(provider: provider),
       graph: HostGraph(provider: provider),
       alerts: AlertFeed(
@@ -22,6 +30,12 @@ class HidsScreen extends StatelessWidget {
           return s == 'hids' || s == 'fim';
         }).toList(),
         title: 'Host & FIM Alerts',
+        isExpanded: _isAlertsExpanded,
+        onExpandToggle: () {
+          setState(() {
+            _isAlertsExpanded = !_isAlertsExpanded;
+          });
+        },
       ),
     );
   }
